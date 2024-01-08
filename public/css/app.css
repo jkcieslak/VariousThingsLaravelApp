@@ -44,6 +44,9 @@ p code {
     padding: 0.05em 0.2em;
     border: 1px solid #ccc;
 }
+p.puzzle-input {
+    white-space: pre-wrap;
+}
 
 ol, ul {
     margin: 1em;
@@ -192,3 +195,10 @@ header a + a {
     color: grey;
 }
 
+.code {
+    background-color: #eee;
+    padding: 0.05em 0.2em;
+    border: 1px solid #ccc;
+    white-space: pre;
+    overflow: scroll;
+}

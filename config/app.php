@@ -185,4 +185,8 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+     * Aoc session cookie for authentication
+     */
+    'aocSession' => env('AOC_SESSION'),
 ];

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AoCController;
+use App\Http\Controllers\CatFactController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+//Home Route
+Route::get('/', [HomeController::class, 'home']);
+
+//Advent of Code
+Route::get('/aoc/{year}/{day}/{puzzle}/{fetchFromAoC?}', [AoCController::class, 'puzzleAnswer']);
+
+//Ascii decoder
+Route::get('/ascii', function () {
+    return view('asciiDecoder');
+});
+
+
+//Rest
+
+Route::get('/helloWorld', function () {
+    return view('helloWorld');
+});
+
+Route::get('/login', function () {
+    return view('welcome');
+});
+
+Route::get('/register', function () {
     return view('welcome');
 });
