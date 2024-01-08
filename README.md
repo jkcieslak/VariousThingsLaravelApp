@@ -1,6 +1,6 @@
 ## About
 
-It's a server I'm currently developing which includes random currently useful to me things.
+It's a server I'm currently developing which includes some currently useful to me things.
 
 ## Current Contents
 
