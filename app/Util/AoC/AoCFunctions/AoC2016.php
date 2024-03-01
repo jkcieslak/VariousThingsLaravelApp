@@ -295,5 +295,37 @@ class AoC2016
 
         return 0;
     }
-    
+
+    public static function puzzle_2016_5_1(string $input) : string {
+        $passcode = [];
+        $i = 0;
+        while(count($passcode) < 8) {
+            $hash = md5(trim($input).$i);
+            if(str_starts_with($hash, '00000')){
+                dump($hash);
+                $passcode[] = substr($hash, 5, 1);
+            }
+            $i++;
+        }
+        return implode('', $passcode);
+    }
+
+    public static function puzzle_2016_5_2(string $input) : string {
+        $passcode = [];
+        $i = 0;
+        while(count($passcode) < 8) {
+            $hash = md5(trim($input).$i);
+            if(str_starts_with($hash, '00000')) {
+                if(isset($passcode[$hash[5]]) || !is_numeric($hash[5]) || $hash[5] > 7 ) {
+                    $i++;
+                    continue;
+                }
+                dump($hash);
+                $passcode[intval($hash[5])] = $hash[6];
+            }
+            $i++;
+        }
+        ksort($passcode);
+        return implode('', $passcode);
+    }
 }
