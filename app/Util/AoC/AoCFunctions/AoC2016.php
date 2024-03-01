@@ -364,4 +364,61 @@ class AoC2016
         }
         return $message;
     }
+
+    public static function puzzle_2016_7_1(string $input) : string {
+        $ips = 0;
+        $lines = explode(PHP_EOL, trim($input));
+        foreach($lines as $line) {
+            $line = str_replace('[', ']', $line);
+            $line = explode(']', $line);
+
+            //search for abba in bracket
+            for($j = 1; $j < count($line); $j +=2 ){
+                for($i = 0; $i < strlen($line[$j]) - 3; $i++) {
+                    if($line[$j][$i] != $line[$j][$i + 1] && $line[$j][$i] == $line[$j][$i + 3] && $line[$j][$i + 1] == $line[$j][$i + 2]) {
+                        continue 3;
+                    }
+                }
+            }
+            //search for abba outside brackets
+            for($j = 0; $j < count($line); $j += 2) {
+                for($i = 0; $i < strlen($line[$j]) - 3; $i++) {
+                    if($line[$j][$i] != $line[$j][$i + 1] && $line[$j][$i] == $line[$j][$i + 3] && $line[$j][$i + 1] == $line[$j][$i + 2]) {
+                        $ips++;
+                        continue 3;
+                    }
+                }
+            }
+        }
+        return $ips;
+    }
+
+    public static function puzzle_2016_7_2(string $input) : string {
+        $ips = 0;
+        $lines = explode(PHP_EOL, trim($input));
+        foreach($lines as $line) {
+            $line = str_replace('[', ']', $line);
+            $line = explode(']', $line);
+            $babCandidates = [];
+            //search for BAB candidates outside brackets
+            for($j = 0; $j < count($line); $j += 2) {
+                for($i = 0; $i < strlen($line[$j]) - 2; $i++) {
+                    if($line[$j][$i] != $line[$j][$i + 1] && $line[$j][$i] == $line[$j][$i + 2]){
+                        $babCandidates[] = ($line[$j][$i + 1]).($line[$j][$i]).($line[$j][$i + 1]);
+                    }
+                }
+            }
+            //check if any of corresponding BABs can be found inside brackets
+            for($j = 1; $j < count($line); $j += 2) {
+                foreach($babCandidates as $babCandidate) {
+                    if(str_contains($line[$j], $babCandidate)) {
+                        $ips++;
+                        continue 3;
+                    }
+                }
+            }
+        }
+        return $ips;
+    }
+
 }
