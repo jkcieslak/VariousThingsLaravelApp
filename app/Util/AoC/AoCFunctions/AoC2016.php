@@ -328,4 +328,40 @@ class AoC2016
         ksort($passcode);
         return implode('', $passcode);
     }
+
+    public static function puzzle_2016_6_1(string $input) : string {
+        $message = '';
+        $lines = explode(PHP_EOL, $input);
+        $columns = [];
+        foreach ($lines as $line) {
+            for($i = 0; $i < strlen($line); $i++) {
+                $columns[$i][] = $line[$i];
+            }
+        }
+        $columnFreqs = [];
+        foreach($columns as $key => $column) {
+            $columnFreqs[$key] = array_count_values($column);
+            arsort($columnFreqs[$key]);
+            $message .= array_key_first($columnFreqs[$key]);
+        }
+        return $message;
+    }
+
+    public static function puzzle_2016_6_2(string $input) : string {
+        $message = '';
+        $lines = explode(PHP_EOL, $input);
+        $columns = [];
+        foreach ($lines as $line) {
+            for($i = 0; $i < strlen($line); $i++) {
+                $columns[$i][] = $line[$i];
+            }
+        }
+        $columnFreqs = [];
+        foreach($columns as $key => $column) {
+            $columnFreqs[$key] = array_count_values($column);
+            asort($columnFreqs[$key]);
+            $message .= array_key_first($columnFreqs[$key]);
+        }
+        return $message;
+    }
 }
