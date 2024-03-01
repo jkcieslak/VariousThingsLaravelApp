@@ -3,6 +3,7 @@
 namespace App\Util\AoC\AoCFunctions;
 
 use App\Util\AoC\AoCException;
+use ErrorException;
 
 class AoC2016
 {
@@ -170,4 +171,129 @@ class AoC2016
         }
         return implode('', $code);
     }
+
+    public static function puzzle_2016_3_1(string $input) : int {
+        $possible = 0;
+        $triangles = explode(PHP_EOL, trim($input));
+        foreach($triangles as $triangle) {
+            $sides = [];
+            preg_match_all('/\d+/', $triangle, $sides);
+            $a = intval($sides[0][0]);
+            $b = intval($sides[0][1]);
+            $c = intval($sides[0][2]);
+            if($a >= $b + $c || $b >= $a + $c || $c >= $a + $b) {
+                continue;
+            }
+            $possible++;
+        }
+        return $possible;
+    }
+
+    public static function puzzle_2016_3_2(string $input) : int {
+        $possible = 0;
+        $triangles = explode(PHP_EOL, trim($input));
+        foreach($triangles as &$triangle) {
+            $sides = [];
+            preg_match_all('/\d+/', $triangle, $sides);
+            $triangle = $sides[0];
+        }
+        unset($triangle);
+        for($i = 0; $i < count($triangles); $i += 3) {
+            for($j = 0; $j < 3; $j++) {
+                $a = intval($triangles[$i][$j]);
+                $b = intval($triangles[$i+1][$j]);
+                $c = intval($triangles[$i+2][$j]);
+                if($a >= $b + $c || $b >= $a + $c || $c >= $a + $b) {
+                    continue;
+                }
+                $possible++;
+            }
+        }
+        return $possible;
+    }
+
+    public static function puzzle_2016_4_1(string $input) : int {
+        $rooms = explode(PHP_EOL, trim($input));
+        $sectorSum = 0;
+
+        foreach($rooms as $room){
+            $segs = explode('-', $room);
+
+            $control = array_pop($segs);
+            $control = str_replace(']', '', $control);
+            $control = explode('[', $control);
+            $sectorId = intval($control[0]);
+            $checkSum = $control[1];
+            $checkSum = str_split($checkSum, 1);
+
+            $counts = count_chars(implode('', $segs), 1);
+            arsort($counts);
+            $topChars = [];
+            foreach($counts as $key => $count) {
+                $topChars[] = chr($key);
+            }
+
+            for ($i = 0; $i < count($checkSum); $i++) {
+                if($topChars[$i] != $checkSum[$i]) {
+                    continue 2;
+                }
+            }
+            $sectorSum += $sectorId;
+        }
+
+        return $sectorSum;
+    }
+
+    public static function puzzle_2016_4_2(string $input) : int {
+        $rooms = explode(PHP_EOL, trim($input));
+        $realRooms = [];
+
+        foreach($rooms as $room){
+            $segs = explode('-', $room);
+
+            $control = array_pop($segs);
+            $control = str_replace(']', '', $control);
+            $control = explode('[', $control);
+            $sectorId = intval($control[0]);
+            $checkSum = $control[1];
+            $checkSum = str_split($checkSum, 1);
+
+            $counts = count_chars(implode('', $segs), 1);
+            arsort($counts);
+            $topChars = [];
+            foreach($counts as $key => $count) {
+                $topChars[] = chr($key);
+            }
+
+            for ($i = 0; $i < count($checkSum); $i++) {
+                if($topChars[$i] != $checkSum[$i]) {
+                    continue 2;
+                }
+            }
+            $realRooms[] = ['encryptedName' => implode('-', $segs), 'sectorId' => $sectorId];
+        }
+
+        foreach ($realRooms as &$room) {
+            $encryptedChars = str_split($room['encryptedName']);
+            $chars = [];
+            foreach($encryptedChars as $enChar) {
+                if($enChar == '-') {
+                    $chars[] = ' ';
+                    continue;
+                }
+                $chars[] = chr(ord('a') + ((ord($enChar)-ord('a') + $room['sectorId']) % 26));
+            }
+            $room['name'] = implode('', $chars);
+            $match = [];
+            if(preg_match('/north/', $room['name'], $match) > 0) {
+                return $room['sectorId'];
+            }
+        }
+        unset($room);
+
+        dump($realRooms);
+
+        return 0;
+    }
+    
 }
