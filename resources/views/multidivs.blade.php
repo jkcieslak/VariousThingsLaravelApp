@@ -27,7 +27,7 @@
         @elseif($div['type'] == 'puzzleInput')
             <div><p class="puzzle-input">{{ $div['text'] }}</p></div>
         @else
-            <div><p> {{ $div['text'] }}</p></div>
+            <div><p class="puzzle-answer">{{ $div['text'] }}</p></div>
         @endif
     @endforeach
 </body>

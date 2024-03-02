@@ -48,6 +48,12 @@ p.puzzle-input {
     white-space: pre-wrap;
 }
 
+p.puzzle-answer {
+    white-space: pre-wrap;
+    font-family: monospace;
+    line-height: 1;
+}
+
 ol, ul {
     margin: 1em;
 }

@@ -421,4 +421,113 @@ class AoC2016
         return $ips;
     }
 
+    public static function puzzle_2016_8_1(string $input) : int {
+        $ROW_LENGTH = 50;
+        $COL_LENGTH = 6;
+        $screen = [];
+        $lit = 0;
+        for($i = 0; $i < $ROW_LENGTH; $i++) {
+            for($j = 0; $j < $COL_LENGTH; $j++) {
+                $screen[$i][$j] = 0;
+            }
+        }
+        $lines = explode(PHP_EOL, trim($input));
+        foreach($lines as $instruction) {
+            $words = explode(' ', $instruction);
+            if($words[0] == 'rect') {
+                $nums = explode('x', $words[1]);
+                $x = intval($nums[0]);
+                $y = intval($nums[1]);
+                for($i = 0; $i < $x; $i++) {
+                    for($j = 0; $j < $y; $j ++) {
+                        $screen[$i][$j] = 1;
+                    }
+                }
+            }
+            if($words[0] == 'rotate') {
+                if($words[1] == 'row') {
+                    $y = explode('=', $words[2])[1];
+                    $val = intval($words[4]);
+                    $initRow = [];
+                    for($i = 0; $i < $ROW_LENGTH; $i++) {
+                        $initRow[$i] = $screen[$i][$y];
+                    }
+                    for($i = 0; $i < $ROW_LENGTH; $i++) {
+                        $screen[($i + $val) % $ROW_LENGTH][$y] = $initRow[$i];
+                    }
+                } else if ($words[1] == 'column') {
+                    $x = explode('=', $words[2])[1];
+                    $val = intval($words[4]);
+                    $initCol = [];
+                    for($j = 0; $j < $COL_LENGTH; $j++) {
+                        $initCol[$j] = $screen[$x][$j];
+                    }
+                    for($j = 0; $j < $COL_LENGTH; $j++) {
+                        $screen[$x][($j + $val) % $COL_LENGTH] = $initCol[$j];
+                    }
+                }
+            }
+        }
+        foreach($screen as $column) {
+            $lit+= array_sum($column);
+        }
+        return $lit;
+    }
+
+    public static function puzzle_2016_8_2(string $input) : string {
+        $ROW_LENGTH = 50;
+        $COL_LENGTH = 6;
+        $screen = [];
+        $lit = 0;
+        for($i = 0; $i < $ROW_LENGTH; $i++) {
+            for($j = 0; $j < $COL_LENGTH; $j++) {
+                $screen[$i][$j] = 0;
+            }
+        }
+        $lines = explode(PHP_EOL, trim($input));
+        foreach($lines as $instruction) {
+            $words = explode(' ', $instruction);
+            if($words[0] == 'rect') {
+                $nums = explode('x', $words[1]);
+                $x = intval($nums[0]);
+                $y = intval($nums[1]);
+                for($i = 0; $i < $x; $i++) {
+                    for($j = 0; $j < $y; $j ++) {
+                        $screen[$i][$j] = 1;
+                    }
+                }
+            }
+            if($words[0] == 'rotate') {
+                if($words[1] == 'row') {
+                    $y = explode('=', $words[2])[1];
+                    $val = intval($words[4]);
+                    $initRow = [];
+                    for($i = 0; $i < $ROW_LENGTH; $i++) {
+                        $initRow[$i] = $screen[$i][$y];
+                    }
+                    for($i = 0; $i < $ROW_LENGTH; $i++) {
+                        $screen[($i + $val) % $ROW_LENGTH][$y] = $initRow[$i];
+                    }
+                } else if ($words[1] == 'column') {
+                    $x = explode('=', $words[2])[1];
+                    $val = intval($words[4]);
+                    $initCol = [];
+                    for($j = 0; $j < $COL_LENGTH; $j++) {
+                        $initCol[$j] = $screen[$x][$j];
+                    }
+                    for($j = 0; $j < $COL_LENGTH; $j++) {
+                        $screen[$x][($j + $val) % $COL_LENGTH] = $initCol[$j];
+                    }
+                }
+            }
+        }
+        $screenStr = '';
+        for($j = 0; $j < $COL_LENGTH; $j++) {
+            for($i = 0; $i < $ROW_LENGTH; $i++) {
+                $screenStr.= $screen[$i][$j] ? '#' : ' ';
+            }
+            $screenStr.=PHP_EOL;
+        }
+        return $screenStr;
+    }
 }
