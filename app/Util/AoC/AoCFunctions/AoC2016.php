@@ -530,4 +530,72 @@ class AoC2016
         }
         return $screenStr;
     }
+
+    public static function puzzle_2016_9_1(string $input) : int {
+        $input = trim($input);
+        $decompressed = [];
+        $i = 0;
+        while (isset($input[$i])) {
+            if($input[$i] != '('){
+                $decompressed[] = $input[$i];
+                $i++;
+            }
+            if($input[$i] == '('){
+                $seqLength = 0;
+                $seqTimes = 0;
+                //read next two numbers
+                while($input[$i] != 'x') {
+                    $seqLength = $seqLength * 10 + intval($input[$i]);
+                    $i++;
+                }
+                $i++;
+                while($input[$i] != ')') {
+                    $seqTimes = $seqTimes * 10 + intval($input[$i]);
+                    $i++;
+                }
+                $i++;
+                $sequence = substr($input, $i, $seqLength);
+                for($j = 0; $j < $seqTimes; $j++) {
+                    $decompressed[] = $sequence;
+                }
+                $i += $seqLength;
+            }
+        }
+        $decompressed = implode($decompressed);
+        return strlen($decompressed);
+    }
+
+    public static function puzzle_2016_9_2(string $input) : int {
+        $input = trim($input);
+        $length = 0;
+        $weights = [];
+        for($i = 0; $i < strlen($input); $i ++) {
+            $weights[$i] = 1;
+        }
+        $i = 0;
+        while (isset($input[$i])) {
+            if ($input[$i] != '('){
+                $length += $weights[$i];
+                $i++;
+            } else {
+                $seqLength = 0;
+                $seqTimes = 0;
+                //read next two numbers
+                while ($input[$i] != 'x') {
+                    $seqLength = $seqLength * 10 + intval($input[$i]);
+                    $i++;
+                }
+                $i++;
+                while ($input[$i] != ')') {
+                    $seqTimes = $seqTimes * 10 + intval($input[$i]);
+                    $i++;
+                }
+                $i++;
+                for ($j = 0; $j < $seqLength; $j++) {
+                    $weights[$i + $j] *= $seqTimes;
+                }
+            }
+        }
+        return $length;
+    }
 }
