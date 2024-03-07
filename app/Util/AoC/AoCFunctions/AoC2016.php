@@ -598,4 +598,134 @@ class AoC2016
         }
         return $length;
     }
+
+    public static function puzzle_2016_10_1(string $input) : int {
+        $lines = explode(PHP_EOL, trim($input));
+        $objects = [];
+        $waiting = [];
+        foreach($lines as $line) {  //creating a graph
+            $words = explode(' ', $line);
+            if($words[0] == 'bot') {
+                $botId = 'b'.$words[1];
+                $lowPrefix = str_starts_with($words[5], 'b') ? 'b' : 'o';
+                $lowId = $lowPrefix.$words[6];
+                $highPrefix = str_starts_with($words[10], 'b') ? 'b' : 'o';
+                $highId = $highPrefix.$words[11];
+                if(!isset($objects[$botId]))
+                    $objects[$botId] = ['values' => []];
+                $objects[$botId]['lowId'] = $lowId;
+                $objects[$botId]['highId'] = $highId;
+                if(isset($waiting[$botId])){
+                    $waiting[$botId]['lowId'] = $lowId;
+                    $waiting[$botId]['highId'] = $highId;
+                }
+            }
+            if($words[0] == 'value') {
+                $botId = 'b'.$words[5];
+                $value = intval($words[1]);
+                if(!isset($objects[$botId]))
+                    $objects[$botId] = ['values' => []];
+                $objects[$botId]['values'][] = $value;
+                $waiting[$botId] = $objects[$botId];
+            }
+        }
+
+        $curr = [];
+        foreach($waiting as $key => $w) {
+            if(count($w['values']) == 2) {
+                $curr[$key] = $w;
+            }
+        }
+        while(count($curr) > 0) {
+            $key = array_key_first($curr);
+            $lowId = $curr[$key]['lowId'];
+            $highId = $curr[$key]['highId'];
+            $lowerVal = min($curr[$key]['values']);
+            $higherVal = max($curr[$key]['values']);
+
+            if ($lowerVal == 17 && $higherVal == 61) {
+                return intval(substr($key, 1));
+            }
+
+            $objects[$lowId]['values'][] = $lowerVal;
+            if (str_starts_with($lowId, 'b') && array_key_exists($lowId, $waiting)) {
+                $curr[$lowId] = $objects[$lowId];
+                unset($waiting[$lowId]);
+            } else {
+                $waiting[$lowId] = $objects[$lowId];
+            }
+            $objects[$highId]['values'][] = $higherVal;
+            if (str_starts_with($highId, 'b') && array_key_exists($highId, $waiting)) {
+                $curr[$highId] = $objects[$highId];
+                unset($waiting[$highId]);
+            } else {
+                $waiting[$highId] = $objects[$highId];
+            }
+            unset($curr[$key]);
+        }
+        return 0;
+    }
+
+    public static function puzzle_2016_10_2(string $input) : int {
+        $lines = explode(PHP_EOL, trim($input));
+        $objects = [];
+        $waiting = [];
+        foreach($lines as $line) {  //creating a graph
+            $words = explode(' ', $line);
+            if($words[0] == 'bot') {
+                $botId = 'b'.$words[1];
+                $lowPrefix = str_starts_with($words[5], 'b') ? 'b' : 'o';
+                $lowId = $lowPrefix.$words[6];
+                $highPrefix = str_starts_with($words[10], 'b') ? 'b' : 'o';
+                $highId = $highPrefix.$words[11];
+                if(!isset($objects[$botId]))
+                    $objects[$botId] = ['values' => []];
+                $objects[$botId]['lowId'] = $lowId;
+                $objects[$botId]['highId'] = $highId;
+                if(isset($waiting[$botId])){
+                    $waiting[$botId]['lowId'] = $lowId;
+                    $waiting[$botId]['highId'] = $highId;
+                }
+            }
+            if($words[0] == 'value') {
+                $botId = 'b'.$words[5];
+                $value = intval($words[1]);
+                if(!isset($objects[$botId]))
+                    $objects[$botId] = ['values' => []];
+                $objects[$botId]['values'][] = $value;
+                $waiting[$botId] = $objects[$botId];
+            }
+        }
+
+        $curr = [];
+        foreach($waiting as $key => $w) {
+            if(count($w['values']) == 2) {
+                $curr[$key] = $w;
+            }
+        }
+        while(count($curr) > 0) {
+            $key = array_key_first($curr);
+            $lowId = $curr[$key]['lowId'];
+            $highId = $curr[$key]['highId'];
+            $lowerVal = min($curr[$key]['values']);
+            $higherVal = max($curr[$key]['values']);
+
+            $objects[$lowId]['values'][] = $lowerVal;
+            if (str_starts_with($lowId, 'b') && array_key_exists($lowId, $waiting)) {
+                $curr[$lowId] = $objects[$lowId];
+                unset($waiting[$lowId]);
+            } else {
+                $waiting[$lowId] = $objects[$lowId];
+            }
+            $objects[$highId]['values'][] = $higherVal;
+            if (str_starts_with($highId, 'b') && array_key_exists($highId, $waiting)) {
+                $curr[$highId] = $objects[$highId];
+                unset($waiting[$highId]);
+            } else {
+                $waiting[$highId] = $objects[$highId];
+            }
+            unset($curr[$key]);
+        }
+        return $objects['o0']['values'][0] * $objects['o1']['values'][0] * $objects['o2']['values'][0];
+    }
 }
