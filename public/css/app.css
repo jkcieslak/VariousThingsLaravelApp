@@ -21,11 +21,11 @@ html {
         max-width: 42em;
     } }
 
-h1, h2, h3, h4 {
+/*h1, h2, h3, h4 {
     margin: 2.5rem 0 1.5rem 0;
     line-height: 1.25;
     color: #333;
-}
+}*/
 
 a {
     color: #fa6432;
