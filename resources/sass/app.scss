@@ -1,3 +1,12 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
 
 
 * {
@@ -21,11 +30,11 @@ html {
         max-width: 42em;
     } }
 
-/*h1, h2, h3, h4 {
+h1, h2, h3, h4 {
     margin: 2.5rem 0 1.5rem 0;
     line-height: 1.25;
     color: #333;
-}*/
+}
 
 a {
     color: #fa6432;
@@ -43,15 +52,6 @@ p code {
     background-color: #eee;
     padding: 0.05em 0.2em;
     border: 1px solid #ccc;
-}
-p.puzzle-input {
-    white-space: pre-wrap;
-}
-
-p.puzzle-answer {
-    white-space: pre-wrap;
-    font-family: monospace;
-    line-height: 1;
 }
 
 ol, ul {
@@ -201,10 +201,3 @@ header a + a {
     color: grey;
 }
 
-.code {
-    background-color: #eee;
-    padding: 0.05em 0.2em;
-    border: 1px solid #ccc;
-    white-space: pre;
-    overflow: scroll;
-}

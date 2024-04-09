@@ -765,6 +765,6 @@ class AoC2015
         }
 
 
-
+        return 0;
     }
 }

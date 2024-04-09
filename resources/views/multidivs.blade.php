@@ -7,6 +7,7 @@
 
     <link href="{{ URL::asset('css/app.css') }}" rel="stylesheet" />
     <script type="text/javascript" defer src="{{ URL::asset('js/app.js') }}"></script>
+
 {{--    HL.JS--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -27,7 +28,7 @@
         @elseif($div['type'] == 'puzzleInput')
             <div><p class="puzzle-input">{{ $div['text'] }}</p></div>
         @else
-            <div><p> {{ $div['text'] }}</p></div>
+            <div><p class="puzzle-answer">{{ $div['text'] }}</p></div>
         @endif
     @endforeach
 </body>

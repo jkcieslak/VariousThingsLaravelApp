@@ -12,11 +12,23 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class AoCController extends Controller
 {
     private AoCService $aoCService;
+
+    private AoCFunctions $aoCFunctions;
+
     public function __construct(AoCService $aoCService) {
         $this->aoCService = $aoCService;
+        $this->aoCFunctions = AoCFunctions::getInstance();
     }
+
+    public function index(Request $request) : View {
+        return view('aoCMenu', [
+                'title' => 'Advent of Code',
+                'navTree' => $this->aoCFunctions->getRouteArray(),
+            ]
+        );
+    }
+
     public function puzzleAnswer(Request $request, int $year, int $day, int $puzzle, ?bool $fetchFromAoC = true) : View {
-        $aocFunctions = AoCFunctions::getInstance();
 
 //        try {
             $input = $fetchFromAoC ? $this->aoCService->getPuzzleInput($year, $day) : $request->get('input');
@@ -28,7 +40,7 @@ class AoCController extends Controller
 //        }
 
 //        try {
-            $answer = $aocFunctions->getFunction($year, $day, $puzzle)($input);
+            $answer = $this->aoCFunctions->getFunction($year, $day, $puzzle)($input);
 //        } catch (\Exception $e) {
 //            abort(422, $e);
 //        }
@@ -43,7 +55,7 @@ class AoCController extends Controller
             ],
             [
                 'header' => 'Code',
-                'text' => $this->aoCService->getFunctionSourceCode($aocFunctions->getFunctionArray()[$year][$day][$puzzle]),
+                'text' => $this->aoCService->getFunctionSourceCode($this->aoCFunctions->getFunction($year, $day, $puzzle)),
                 'type' => 'code',
             ],
             [
@@ -58,5 +70,6 @@ class AoCController extends Controller
             'divs' => $divs
         ]);
     }
+
 }
 

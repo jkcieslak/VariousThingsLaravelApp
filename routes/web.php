@@ -20,7 +20,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'home']);
 
 //Advent of Code
-Route::get('/aoc/{year}/{day}/{puzzle}/{fetchFromAoC?}', [AoCController::class, 'puzzleAnswer']);
+Route::controller(AoCController::class)->name('aoc.')->prefix('aoc')->group(function () {
+    Route::get('/index', 'index')->name('index');
+    Route::get('/{year}/{day}/{puzzle}/{fetchFromAoC?}','puzzleAnswer')->name('puzzle');
+});
+
+
 
 //Ascii decoder
 Route::get('/ascii', function () {
@@ -40,4 +45,8 @@ Route::get('/login', function () {
 
 Route::get('/register', function () {
     return view('welcome');
+});
+
+Route::fallback(function() {
+    return 'Ya lost, kid?';
 });

@@ -11,7 +11,11 @@ class AoCFunctions
 {
     private static ?AoCFunctions $instance = null;
     private array $functionArray;
-
+    private array $routeArray;
+    const YEAR_FIRST = 2015;
+    const YEAR_LAST = 2023;
+    const DAY_FIRST = 1;
+    const DAY_LAST = 25;
     private function __construct() {}
 
     private function __clone() {}
@@ -26,20 +30,19 @@ class AoCFunctions
         if (!isset(self::$instance)) {
             self::$instance = new self();
             self::$instance->initFunctionArray();
+            self::$instance->initRouteArray();
         }
         return self::$instance;
     }
 
     private function initFunctionArray() : void {
-//        $this->functionArray[2015][1][1] = \App\Util\AoC\AoCFunctions\AoC2015::puzzle_2015_1_1(...);
-
-        for($year = 2015; $year <= 2023 ; $year++) {
+        for($year = AoCFunctions::YEAR_FIRST; $year <= AoCFunctions::YEAR_LAST ; $year++) {
             $classString = '\App\Util\AoC\AoCFunctions\AoC'.$year;
-            for($day = 1; $day <= 25; $day++) {
+            for($day = AoCFunctions::DAY_FIRST; $day <= AoCFunctions::DAY_LAST; $day++) {
                 for($puzzle = 1; $puzzle <= 2; $puzzle++){
                     try {
                         $functionString = 'puzzle_'.$year.'_'.$day.'_'.$puzzle;
-                        $this->functionArray[$year][$day][$puzzle] = $classString::$functionString(...); //This could raise some eyebrows
+                        $this->functionArray[$year][$day][$puzzle] = $classString::$functionString(...);
                     } catch (\Error $e){
                         continue;
                     }
@@ -48,8 +51,23 @@ class AoCFunctions
         }
     }
 
+    private function initRouteArray() : void {
+        $this->routeArray = $this->functionArray;
+        array_walk($this->routeArray, function(&$yearArr, $year) {
+            array_walk($yearArr, function(&$dayArr, $day) use ($year){
+                array_walk($dayArr, function(&$puzzle, $puzzleNo) use($year, $day){
+                    $puzzle = route('aoc.puzzle', ['year' => $year, 'day' => $day, 'puzzle' => $puzzleNo]);
+                });
+            });
+        });
+    }
+
     public function getFunctionArray() : array {
         return $this->functionArray;
+    }
+
+    public function getRouteArray() : array {
+        return $this->routeArray;
     }
 
     /**
