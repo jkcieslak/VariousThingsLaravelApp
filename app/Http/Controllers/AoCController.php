@@ -20,7 +20,7 @@ class AoCController extends Controller
         $this->aoCFunctions = AoCFunctions::getInstance();
     }
 
-    public function index(Request $request) {
+    public function index(Request $request) : View {
         return view('aoCMenu', [
                 'title' => 'Advent of Code',
                 'navTree' => $this->aoCFunctions->getRouteArray(),
