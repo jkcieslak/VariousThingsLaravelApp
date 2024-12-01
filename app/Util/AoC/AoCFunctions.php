@@ -13,7 +13,7 @@ class AoCFunctions
     private array $functionArray;
     private array $routeArray;
     const YEAR_FIRST = 2015;
-    const YEAR_LAST = 2023;
+    const YEAR_LAST = 2024;
     const DAY_FIRST = 1;
     const DAY_LAST = 25;
     private function __construct() {}
@@ -36,10 +36,14 @@ class AoCFunctions
     }
 
     private function initFunctionArray() : void {
+
         for($year = AoCFunctions::YEAR_FIRST; $year <= AoCFunctions::YEAR_LAST ; $year++) {
             $classString = '\App\Util\AoC\AoCFunctions\AoC'.$year;
+
             for($day = AoCFunctions::DAY_FIRST; $day <= AoCFunctions::DAY_LAST; $day++) {
+
                 for($puzzle = 1; $puzzle <= 2; $puzzle++){
+
                     try {
                         $functionString = 'puzzle_'.$year.'_'.$day.'_'.$puzzle;
                         $this->functionArray[$year][$day][$puzzle] = $classString::$functionString(...);
@@ -53,6 +57,7 @@ class AoCFunctions
 
     private function initRouteArray() : void {
         $this->routeArray = $this->functionArray;
+
         array_walk($this->routeArray, function(&$yearArr, $year) {
             array_walk($yearArr, function(&$dayArr, $day) use ($year){
                 array_walk($dayArr, function(&$puzzle, $puzzleNo) use($year, $day){
@@ -74,7 +79,7 @@ class AoCFunctions
      * @throws AoCException
      */
     public function getFunction(int $year, int $day, int $puzzle) {
-        if($year < 2015 || $year >2023) {
+        if($year < self::YEAR_FIRST || $year > self::YEAR_LAST) {
             throw new AoCException("There are no puzzles for given year");
         }
         if($day < 1 || $day > 25) {
